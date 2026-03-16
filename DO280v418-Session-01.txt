@@ -1,0 +1,92 @@
+https://github.com/cprakash2118/DO280v418-16-March-2026
+
+https://reprint.forrester.com/reports/the-forrester-wavetm-multicloud-container-platforms-q3-2025-f3367e46/index.html
+
+**********************************
+Point-01-# Product & Technologies:-
+**********************************
+
+Product Name - Red Hat OpenShift 
+Technologies - Multicloud Container Platforms
+
+Product:- Red Hat OpenShift
+
+1-) Cloud services editions - Fully managed in the public cloud of your choice
+ - "Red Hat OpenShift" Service on AWS    -> Jointly managed and supported by Red Hat and AWS
+ - Microsoft Azure "Red Hat OpenShift"   -> Jointly managed and supported by Red Hat and Microsoft
+ - "Red Hat OpenShift" Dedicated         -> Managed offering available on AWS or Google Cloud (POC=RedHat)
+ - "Red Hat OpenShift" on IBM Cloud      -> Jointly supported by Red Hat and IBM; managed by IBM
+ 
+2-) Self-managed editions - Granular control on your own infrastructure
+ - Red Hat OpenShift Kubernetes Engine      [Basic;RHOKE]
+ - Red Hat OpenShift Container Platform     [Standard; RHOCP]
+ - Red Hat OpenShift Platform Plus          [Add-ons; RHOPP]
+ - Red Hat OpenShift Virtualization Engine  [Add-ons; RHOVE]
+ 
+3-) Services & add-ons
+ - Red Hat OpenShift AI
+ - Red Hat OpenShift Lightspeed
+ - Red Hat OpenShift Virtualization
+ - Red Hat Quay
+ - Red Hat Advanced Cluster Management for Kubernetes
+ - Red Hat Advanced Cluster Security for Kubernetes
+ - Red Hat Advanced Developer Suite
+ - Red Hat OpenShift Consulting
+ 
+https://www.redhat.com/en/resources/openshift-skill-paths-datasheet
+DO180/DO280/DO380 - Admin Track 
+DO316/DO336/DO346 - OpenShift Virtualization (Based on KubeVirt).
+DO432 (Multi Cloud)  
+
+
+
+
+**********************************
+Point-02-# Classroom environment (Details) - Just think about OCP production env.
+**********************************
+1-) User details:-
+    User login to VMs/Servers:-
+	- student/student [with sudo access]
+	- root/redhat 
+	
+	User login to OpenShift cluster (OCP cluster):-
+    - kubeadmin/kubeadmin-password [This user is very 1st user to login to OCP cluster via OAuth - Auto generated]
+    - admin/redhatocp [cluster-admin ] FYI- cluster-admin is same as root account w.r.t Unix/Linux.
+    - developer/developer [Basic User]
+    FYI- admin & developer users are LDAP users.
+	- API url - https://api.ocp4.example.com:6443 
+	
+	$ oc login -u user -p password API-URL 
+	$ oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+	
+	API-URL - https://api.clusterName.baseDomain:6443 
+ 	clusterName=ocp4 
+	baseDomain=example.com 
+	Port= 6443 (kube-apiserver listion on this port only).
+
+   OCP login - via CLI and Web console.
+   https://console-openshift-console.apps.ocp4.example.com 
+   https://appName-nsName.apps.clusterName.baseDomain 
+   
+   appName = Console
+   NameSpace = OpenShift-console 
+   clusterName=ocp4.
+   Base DOmain=example.com 
+   
+   
+   baseDoamin - citi.com 
+   Cluster list - cluster-blr, cluster-mum 
+   
+   
+   
+   https://api.cluster-blr.example.com:6443 
+   https//console-openshift-console.apps.cluster-blr.citi.com 
+
+   
+   https://api.cluster-del.example.com:6443 
+   https//console-openshift-console.apps.cluster-del.citi.com 
+
+   
+   https://api.cluster-mum.example.com:6443 
+   https//console-openshift-console.apps.cluster-mum.citi.com   
+   
