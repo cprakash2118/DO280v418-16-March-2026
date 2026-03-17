@@ -1,0 +1,115 @@
+#- Sesison-02 - Day-02 - Quick Recap (Day-01)
+Point-01-# Product - Red Hat OpenShift 
+1- Cloud Edition -> ROSA, ARO, Dedicated(AWS/GCP), and IBM-Cloud.
+2- Self Edition  -> Bare Metal [RHOKE,RHOCP,RHOPP]
+3- Add-ons services:-
+  Red Hat OpenShift AI 
+  Red Hat OpenShift Virtulization	
+  Red Hat Advance CLuster Management   (DO432)
+  Red Hat Advance CLuster Security 
+  
+Point-02-# Classroom Env.
+Users Details 
+- Login to VMs/Servers - student/student; root/redhat 
+- Login to OCP cluster - kubeadmin/kubeadmin-password-file admin/redhatocp (cluster-admin);; developer/developer (Basic)
+- While login to OCP cluster - https://api.ocp4.example.com:6443 
+  
+  Logic behind API URL:-
+   https://api.clusterName.baseDoamin:6443 
+    clusterName 
+	baseDoamin
+
+  citi.com - BaseDomain
+  ClusterName - cluster-blr, cluster-del, cluster-mum
+
+  https://api.cluster-blr.citi.com:6443 
+  https://console-openshift-console.apps.cluster-blr.citi.com
+  
+  https://api.cluster-del.citi.com:6443 
+  https://console-openshift-console.apps.cluster-del.citi.com
+  
+  
+  https://api.cluster-del.citi.com:6443 
+  https://console-openshift-console.apps.cluster-del.citi.com
+  
+  
+  ACM:-
+  Cluster Management 
+  Application Management
+  Policy Governence 
+  Observability 
+
+===========================================
+TOC w.r.t DO280 (Day1 operation):-
+
+Day0 -> Deployment/Installation of OCP/OVE/OKE 
+Day1 -> DO280/380 
+
+Unit-1-# Declarative Resource Management 
+- 1. Declarative nature (manifest)
+- 2. Kustomization & Overlay
+
+Unit-2-# Deploy Packaged Applications
+- 1. Template 
+- 2. Helm 
+
+Unit-3-# Authentication and Authorization 
+- 1. Authentication via htpasswd (Deal with Oauth).
+- 2. Authorization via RBAC 
+
+Unit-4-# Network Security 
+- 1. Protect External Traffic with TLS (
+- 2. Configure Network Policies 
+- 3. Protect Internal Traffic with TLS 
+
+
+OCP - Socket/CPU
+Cluster - 50-200
+3 master -> 2000 worker nodes (tested by RH - RHOCPv4.6)
+
+Unit-5-# Expose non-HTTP/SNI Applications.
+- Service Types - LoadBalancer, ClusterIP, NodePort \
+- MetalLB service 
+- Additional CNI (Multus 2ndry network)
+  FYI- Default CNI - OVNKubernetes (CNI - Container Netwrok Interface).
+  
+Unit-6-# LimitRange, Quota and Project Template and the Self-Provisioner Role 
+
+Unit-7-# Operator type amnd deployment 
+Unit-8-# Application Security
+UNit-9-# OpenShift Updates
+
+=================================================
+Kubernetes/OpenShift Resources:-
+Workload - [pod,ReplicaSet,Deployment,StatefulSet,ConfigMap,Secret,DeploymentConfig,ReplicationController, HPA, PDB, jobs, Cronjobs & DaemonSet etc 
+
+Network - Service, route, networkPolicy  
+Storage - StorageClass, PersistentVolume (pv), PersistentVolumeClaim (PVC), OBC, etc 
+Build   -
+Observability - 
+
+# Authentication and Authorization 
+- Configure Identity Providers 
+- Define and Apply Permissions with RBAC 
+
+Q1-# R u able to login to OCP cluster?
+Sol# Yes, using oc (openshift-client) which use the API method to communicate with OCP cluster.
+
+$ oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+$ oc whoami 
+$ oc version 
+$ oc get clusterversion 
+$ oc whoami -t 
+$ oc whoami --show-console 
+https://console-openshift-console.apps.ocp4.example.com 
+
+Task-01:-
+1st Method to Login - Token based Authentication (Via OAuthv2.0)
+2nd Method to Login - Certificate based Authentication (x509)
+
+1st Method to login (Via OAuth):-
+user1-5  -> sre-team -> secret-sre-team -> IdP=IdP-htpasswd-SRE-Team
+user6-10 -> devops-team -> secret-devops-team -> IdP=Idp-htpasswd-DevOps-Team 
+
+Step-1-# Create user's database (via htpasswd)
+Step-2-# Inject the information to OCP cluster (via secret) 
