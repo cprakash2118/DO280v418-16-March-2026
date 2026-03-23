@@ -1,0 +1,115 @@
+Quick Recap:-
+1-) Product :- Red Hat OpenShift 
+   - Cloud Edition [ROSA, ARO, Dedicated, IBM CLoud]
+   - Self Edition  [Bare metal - multiple architecture]
+     Bare Metal (x86_64)
+
+Cloud Deployment - vcpu based 
+Bare Deployment  - Socket based 
+
+
+2-) Classroom Environment:-
+    - users:-
+	  - Login to VMs/Server - student/student; root/redhat
+	  - Login to OCP cluster - admin/redhatocp ; developer/developer 
+	- API URL - https://api.clusterName.baseDoamin:6443  
+	          - https://api.ocp4.example.com 
+    - Web Console 
+	          - https://appName-nsName.apps.clusterName.baseDoamin
+	          - https://console-openshift-console.apps.ocp4.example.com  
+
+
+3-) Authentication and Authorization
+ - Certificate based via x509 
+ - Token based via OAuth 
+	
+	*****
+	Certificate based (based on "kubeconfig")
+	1-) --kubeconfig 
+	  Example:- oc get nodes --kubeconfig /path/kubeconfig
+	  
+	2-)	export KUBECONFIG=/path/kubeconfig
+	   Example:-
+	   $ env | grep KUBECONFIG
+	   $ export KUBECONFIG=/path/kubeconfig
+	   $ env | grep KUBECONFIG
+	   KUBECONFIG=/path/kubeconfig
+	   $ oc get nodes 
+	   $ unset KUBECONFIG
+	   $ env | grep KUBECONFIG
+
+    3-) cp -rv kubeconfig /home/user/.kube/config 
+	   $ oc get nodes 
+	   
+	   
+****************
+Certificate FLow-> User (using Kubeconfig file) -> kube-apiserver (Direct connect with kube-apiserver)
+
+TOken based Flow-> User (using token/user & password) -> openshift-apiserver -> OpenShift-kube-apiserver -> (etcd,openshift-kube-controller,openshift-kube-scheduler).
+
+Ouath not working mean (openshift-apiserver down)
+****************
+
+    Token based via OAuth:-
+	 - OAuth is an Identity Broker.
+	 - Oauth sync with Identity Provider (IdP).
+	 What is IdP ?
+	 - htpasswd (Local IdP) - Which keep the user's database within OCP cluster.
+	 - LDAP 
+	 - Keystone 
+	 - OIDC (Open ID COnnect)
+	 - Active DIrectory (AD).
+	
+	user1-5/redhat 
+	
+	Step-1-# Create Database (User's DB - user & Password).
+	  $ htpasswd --help 
+	  $ htpasswd -c -B -b htpasswd-file-name user1 redhat
+	  $ htpasswd    -B -b htpasswd-file-name user2 redhat
+	  $ htpasswd    -B -b htpasswd-file-name user3 redhat	  
+      $ cat htpasswd-file-name
+	  
+	Step-2-# Place the created database to OCP cluster (Create secret).
+	  $ oc create secret generic secret-htpasswd-a-team --from-file htpasswd=htpasswd-file-name -n openshift-config 
+	  $ oc get secret secret-htpasswd-a-team -n openshift-config
+	  $ oc get secret secret-htpasswd-a-team -n openshift-config -o yaml
+	  
+	Step-03-# UPdate to OAuth service.
+	  $ oc get oauth 
+	  $ oc get oauth -o yaml 
+	  $ oc edit oauth 
+	  or
+	  $ oc get oauth -o yaml > oauth.yaml 
+	  $ vim oauth.yaml 
+	  $ oc apply -f oauth.yaml 
+	  
+	  Work done, but verify on backend level.
+	  
+	  Oauth service:-
+	  $ oc get pods -n openshift-authentication 
+	  $ oc get pods -n openshift-apiserver-operator 
+	  
+	  
+	  Openshift-apiserver service:-
+	  $ oc get pods -n openshift-apiserver
+      $ oc get pods -n openshift-apiserver-operator 
+	  
+	  Openshift-kube-apiserver service:-
+	  $ oc get pods -n openshift-kube-apiserver
+      $ oc get pods -n openshift-kube-apiserver-operator 
+    
+	------------Internal Part of k8s------------
+	  Openshift-etcd service:-
+	  $ oc get pods -n openshift-etcd 
+      $ oc get pods -n openshift-etcd-operator
+	  
+	  Openshift-kube-controller-manager service:-
+	  $ oc get pods -n openshift-kube-controller-manager 
+      $ oc get pods -n openshift-kube-controller-manager-operator 
+	  
+	  Openshift-kube-scheduler service:-
+	  $ oc get pods -n openshift-kube-scheduler
+      $ oc get pods -n openshift-kube-scheduler-operator 
+	---------------------------------------------
+
+Pending on me - Show how to enable TAB (for automatically completion for oc command).
