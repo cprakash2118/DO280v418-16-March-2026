@@ -1,0 +1,84 @@
+Quick Recap:- 
+- Authentication Part (OAuth with IdP=htpasswd).
+  Step-1-# Create DB(user/password) via htpasswd
+  Step-2-# Create secret for database(user/password)
+  Step-3-# Update to OAuth (oc get oauth cluster)
+
+  Backend FLow (Token based auth).
+  $ oc get pods -n openshift-authentication 
+  $ oc get pods -n openshift-authentication-operator
+  FYI- Cluster Operator is an application which invoke k8s/ocp API to manage k8s/ocp resources.
+
+  $ oc get pods -n openshift-apiserver  
+  $ oc get pods -n openshift-apiserver-operator
+
+  $ oc get pods -n openshift-kube-apiserver 
+  $ oc get pods -n openshift-kube-apiserver-operator  
+  
+  $ oc get pods -n openshift-kube-controller-manager 
+  $ oc get pods -n openshift-kube-controller-manager-operator
+  
+  $ oc get pods -n openshift-etcd 
+  $ oc get pods -n openshift-etcd-operator
+  
+  $ oc get pods -n openshift-kube-scheduler 
+  $ oc get pods -n openshift-kube-scheduler-operator
+  
+
+- Authorization Part (RBAC).
+  OAuth provides authorization (Exchange token between IdP and OAuth).
+  Based on authentication authorization setup.
+  
+- oc get groups 
+- oc adm groups new groupName 
+- oc adm groups add-user user1 user2 user3 
+- oc get groups 
+
+- Rule - action 
+- Role - Set of action.
+- Binding (Role binding): Assign role to group/user 
+
+Scope of role binding:-
+- cluster 
+- local(namespace/project).
+
+- rolebindings
+- clusterrolebinding 
+
+ClusterRole:- 
+cluster-admin (Same as root account in linux)
+cluster-reader (Full access to cluster - read level).
+cluster-status 
+self-provisioner - This role accoutable for namespace/project creation.
+
+Role:-
+admin 
+edit 
+view 
+
+Day 0 - installation ( 
+Day 1 - Post installation 
+Day 2 - Support 
+  
+https://www.redhat.com/en/resources/openshift-skill-paths-datasheet
+
+base:-
+DO280/EX280   Admin I   (32 Hours) - 25-55 days  
+DO380/EX380   Admin II  
+DO370/EX370   ODF - Enterprise Storage 
+
+
+DO432/EX432   Multi cluster (ACM)
+DO
+
+
+Socket (1,2) ->
+core [Cloud 
+
+socket * core-per-socket  * thread-per-core 
+1 * 32 * 2 = 64 
+2 * 32 * 2 = 128 
+
+ pod, 
+
+ 
