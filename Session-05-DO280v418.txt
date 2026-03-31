@@ -1,0 +1,156 @@
+Quick Recap (10 mins).
+- Product - Red Hat OpenShift
+  Product Eddition:-
+  1-) Cloud Service Eddition - [ROSA;ARO;RHO-Dedicated;IBM-Cloud]
+  2-) Self Manage Eddition   - [RHOKE; RHOCP; RHOVE ; RHOPP]
+  3-) Add-Ons - RHOAI,RHOVE,RHACM,RHCSA etc 
+
+- Classroom/Prod environment:-
+  Login to VMs:-
+  - student/student - sudo access 
+  - root/redhat 
+
+  Login to OCP cluster:-
+  - admin/redhatocp [cluster-admin aceess - it's same a root access w.r.t Linux]
+  - developer/developer [Basic-User 
+  - kubeadmin/kubeadmin-password-file [on "utility" node - /home/lab/ocp4/auth/{kubeconfig,kubeadmin-password}
+
+  - master01.ocp4.example.com [SNO]
+  - API URL - https://api.ocp4.example.com:6443
+    API URL - https://api.clusterName.baseDoamin:6443 
+	
+  - Web COnsole - https://console-openshift-console.apps.ocp4.example.com 
+                - https://appName-nsName.apps.clusterName.baseDoamin
+				
+  
+- DO280v418 - 
+Unit-3-# Authetication (COnsider like ssh) & Authorization (Consider sudo access).
+ Authetication to OCP cluster:-
+ 
+ 1-) Certificate Based via x509 (kubeconfig file)
+     $ oc get nodes --kubeconfig /localtion/path/kubeconfig
+     $ export KUBECONFIG=/localtion/path/kubeconfig
+     $ cp -rpv /localtion/path/kubeconfig ~/.kube/config 
+
+ 2-) TOken Based via OAuth
+     IdP - Identity Provider [htpasswd identity provides - local IdP]
+	 
+	$ oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+     	 
+	Login to OCP cluster via newly created users (IdP=htpasswd)
+	Step-1-# Create Database (via htpasswd)
+	  $ htpasswd -c -b -B htpasswd-file user1 redhat 
+	  $ htpasswd    -b -B htpasswd-file user2 redhat 
+	  $ cat htpasswd
+	  
+	Step-2-# Inject to OCp cluster via secret (genric).
+	  $ oc create secret generic secret-name --from-file httpaswd=htpasswd-file -n openshift-config 
+	  $ oc get secret secret-name -n openshift-config
+	  
+	  Extract the secret.
+	  oc extract secret/secret-name --to=. -n openshift-config  - download 
+	  oc extract secret/secret-name --to=- -n openshift-config  - View without download.
+	  
+	Step-3-# Update to Oauth file.
+	 $ oc get pods -n openshift-authentication 
+	 
+	Step-4-# Verify the login to OCP cluster.
+	 $ oc get oauth -o yaml 
+
+
+
+Authorization via RBAC:-
+- rule 
+- role 
+- binding 
+
+- Project/namespace & cluster 
+
+cluster-admin - default role 
+cluster-reader - only able to read resources.
+cluster-status - Get the update about the cluster status.
+self-provisioner - It allow to create namespace/project 
+admin w.r.t Project/namespace
+edit w.r.t Project/namespace
+view w.r.t Project/namespace
+
+oc adm policy add-cluster-role-{user/group} roleName user/Group.
+oc adm policy add-role-{user/group} roleName user/Group.
+
+Group cab be created and later you can use RBAC.
+
+
+Deploy application (w.r.t Namespace).
+- What all kubernetes resources required for application (app/db) deployment.
+pod, service(svc), route, Deployment, service, configMap, secret.
+
+
+oc new-app --name myapp httpd
+1-# Deployment -> ReplicaSet -> Pod 
+2-# Service (svc) 
+ 
+
+case-01 - via pod.
+1-# namespace/project
+   $ oc new-project ns-demo01 
+   $ oc project -q
+   ns-demo01
+   $ oc get all 
+   No resources found.
+
+   $ oc new-app --name myapp httpd 
+   $ oc get pods 
+   $ oc get svc 
+   $ oc get deployment 
+   $ oc get replicaset 
+   $ oc get all 
+   
+vim pod.yaml 
+apiVersion: v1
+kind: Pod 
+metadata:
+  name: podName 
+  labels:
+    app: myapp 
+spec:   
+  containers:
+  - name: myappContainerName 
+    image: image-used-tocreate-conatiner
+	imagePullPolicy: IfNotPresent 
+    name: imageName 
+    ports:
+     - containerPort: 8080
+       protocol: TCP 
+     - containerPort: 8443
+       protocol: TCP 
+	   
+	   
+vim replicaset.yaml 
+apiVersion: apps/v1 
+kind: ReplicaSet
+metadata:
+  name: rs-Name 
+spec:
+ replcias:  
+ selector:
+ template:
+ 
+ 
+pod vs replicaset vs deployment vs daemonset vs statefulSet vs 
+
+1-# POD 
+2-# Service 
+3-# ResplicaSet 
+4-# Deployment 
+5-# secret 
+6-# ConfigMap 
+
+
+deployment -> replicaset
+deploymentConfig (dc) -> replicationController 
+
+
+	   
+
+
+
